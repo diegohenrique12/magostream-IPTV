@@ -1,0 +1,42 @@
+name: Atualizar Playlist M3U
+
+on:
+  schedule:
+    # Roda a cada 1 hora. Ajuste o cron conforme sua necessidade.
+    # Sintaxe: minuto hora dia mês dia-da-semana (sempre em UTC)
+    - cron: '0 * * * *'
+  workflow_dispatch:  # permite rodar manualmente pelo botão "Run workflow" no GitHub
+
+permissions:
+  contents: write  # necessário para o workflow comitar o arquivo atualizado
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Buscar M3U com failover
+        env:
+          # As credenciais ficam em Settings > Secrets and variables > Actions
+          # NUNCA coloque a URL com usuário/senha direto neste arquivo
+          M3U_FONTE_1: ${{ secrets.M3U_FONTE_1 }}
+          M3U_FONTE_2: ${{ secrets.M3U_FONTE_2 }}
+        run: python fetch_m3u.py
+
+      - name: Comitar alterações (se houver)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add playlist.m3u status.txt
+          git diff --staged --quiet || git commit -m "Atualização automática da playlist [skip ci]"
+          git push
