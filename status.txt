@@ -1,1 +1,1 @@
-OK - fonte 1 usada em 2026-06-20 14:01:00 UTC
+FALHA - todas as fontes offline em 2026-06-20 14:23:25 UTC. Mantendo arquivo anterior.
