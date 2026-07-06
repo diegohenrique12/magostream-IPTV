@@ -1,1 +1,1 @@
-OK - fonte 1 usada em 2026-07-06 17:42:10 UTC | 32560 canais mantidos, 306473 itens removidos (filmes/séries)
+FALHA - todas as fontes offline em 2026-07-06 19:54:17 UTC. Mantendo arquivo anterior.
